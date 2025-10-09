@@ -41,7 +41,7 @@ class PropertyImageInline(admin.TabularInline):
 
 
 class PropertyAdmin(admin.ModelAdmin):
-    list_display = ('title', 'property_type', 'price', 'status', 'city', 'created_at')
+    list_display = ('title', 'property_type', 'starting_price', 'status', 'city', 'created_at')
     search_fields = ('title', 'address', 'city__name')
     list_filter = ('property_type', 'status', 'city')
     ordering = ('-created_at',)

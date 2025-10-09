@@ -16,6 +16,7 @@ router = Router(tags=["Property"])
 def get_all(request):
     properties = get_list_or_404(
         Property.objects.prefetch_related(
+            'amenities',
             Prefetch(
                 "property_images",
                 queryset=PropertyImage.objects.filter(is_primary=True),

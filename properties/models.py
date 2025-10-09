@@ -6,7 +6,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 from builders.models import Builder
 
-# Country, State, and City Models (unchanged)
+# State, and City Models
 
 class State(models.Model):
     name = models.CharField(max_length=255)
@@ -44,8 +44,8 @@ class Property(models.Model):
     slug = models.SlugField(max_length=255, blank=True)
     property_type = models.CharField(max_length=50, choices=PROPERTY_TYPES)
     description = CKEditor5Field(blank=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2)
-    area = models.FloatField(help_text="Area in square feet")
+    starting_price = models.DecimalField(max_digits=12, decimal_places=2)
+    # area = models.FloatField(help_text="Area in square feet", blank=True)
     builder = models.ForeignKey(Builder, related_name='builder', on_delete=models.SET_NULL, null=True, blank=True)
     address = models.CharField(max_length=255)
     location = models.URLField(blank=True)
@@ -53,7 +53,8 @@ class Property(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Available')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False,
+                                      help_text= "When true, it will be displayed on the home page")
 
     # New relationships with features, amenities, and floor plans
     features = models.ManyToManyField('Feature', blank=True)
@@ -86,6 +87,8 @@ class FloorPlan(models.Model):
     property = models.ForeignKey(Property, related_name='floor_plans', on_delete=models.CASCADE)
     floor_plan_file = models.FileField(upload_to='floor_plans/', help_text="Upload a PDF or image of the floor plan.")
     description = models.TextField(blank=True)
+    area = area = models.FloatField(help_text="Area in square feet", blank=True)
+
 
     def __str__(self):
         return f"Floor Plan for {self.property.title}"
@@ -124,21 +127,3 @@ class Amenity(models.Model):
 
 
 
-
-# Enquiry Model
-# class Enquiry(models.Model):
-#
-#     STATUS_CHOICES = [
-#         ('Pending', 'Pending'),
-#         ('Working', 'Working'),
-#         ('Resolved', 'Resolved'),
-#     ]
-#
-#     client = models.CharField(max_length=255)
-#     property = models.ForeignKey(Property, related_name='enquiries', on_delete=models.CASCADE)
-#     message = models.TextField()
-#     enquiry_date = models.DateTimeField(auto_now_add=True)
-#     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Available')
-#
-#     def __str__(self):
-#         return f"Enquiry for {self.property.title} from {self.client.user.username}"

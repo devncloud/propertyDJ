@@ -16,6 +16,10 @@ class FilteredSchema(FilterSchema):
     class Config:
         from_attributes = True
 
+class CitySchema(ModelSchema):
+    class Meta:
+        model = City
+        fields = ['name']
 
 class AmenitySchema(ModelSchema):
     class Meta:
@@ -45,8 +49,11 @@ class PropertyDetailedSchema(Schema):
     id: int
     title: str
     property_type: str
+    # price: str
     location: Optional[str]
     address: str
+    # city: CitySchema
+    city: CitySchema
     features: List[FeatureSchema] = []
     amenities: List[AmenitySchema] = []
     floor_plans: List[FloorPlanSchema] = []
@@ -58,16 +65,15 @@ class PropertyDetailedSchema(Schema):
 
 
 class GetAllSchema(Schema):
-    id: int
     property_type: str
+    slug: str
     title: str
     description: str
     price: float
-    area: float
     address: str
     city_id: int
     status: str
-    # is_featured: bool
+    amenities: List[AmenitySchema] = []
     primary_image: List[PropertyImageSchema] = []
 
     class Config:

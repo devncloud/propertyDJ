@@ -20,18 +20,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from properties.api import router as property_router
 from builders.api import router as builder_router
+from inquiries.api import router as inquiry_router
 from ninja import NinjaAPI
 
 api = NinjaAPI()
 
-api.add_router("/", property_router)
+api.add_router('/', property_router)
 api.add_router('/', builder_router)
+api.add_router('/', inquiry_router)
+
+# admin.site.site_
 
 urlpatterns = ([
     path('admin/', admin.site.urls),
     path('api/', api.urls),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
 ])
-               #
+
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
